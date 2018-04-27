@@ -11,7 +11,7 @@ Diagnostic messages are displayed on some HTML pages if displayDiagnosticInfo (a
 Diagnostic messages are always written to the [bigParentDirectory]log.txt file (see below).
 At ERD, we set this to 'all' for development and 'info' for releases.
 -->
-<logLevel>info</logLevel>
+<logLevel>all</logLevel>
 
 <!-- warName becomes part of the public url, after baseUrl/.
 This should always be 'erddap'.
@@ -52,8 +52,8 @@ are logged to an emailLogYEAR-MONTH.txt file in the bigParentDirectory.
 <emailEverythingTo>nobody@example.com</emailEverythingTo>
 <emailDailyReportsTo>nobody@example.com</emailDailyReportsTo>
 -->
-<emailEverythingTo></emailEverythingTo>
-<emailDailyReportsTo></emailDailyReportsTo>
+<emailEverythingTo>vrowley@ucsd.edu</emailEverythingTo>
+<emailDailyReportsTo>vrowley@ucsd.edu</emailDailyReportsTo>
 
 <!-- This lets you specify a regular expression which determines which datasetIDs
 in the datasets.xml file should be loaded.
@@ -62,7 +62,7 @@ During development or for other reasons, you might want to use a subset, e.g.,
 "(etopo.*|erdQSu101day|erdMHchla8day|erdGlobecBottle|erdBAssta5day|pmelTaoDySst)",
 so that ERDDAP quickly loads a dataset that you are interested in.
 -->
-<datasetsRegex>.csv</datasetsRegex>
+<datasetsRegex>.*</datasetsRegex>
 
 <!-- If true, when you start up ERDDAP, some types of datasets (e.g.,
 EDDGridFromDap) will used cached information (.dds, .das, etc.) to reload
@@ -70,7 +70,7 @@ very quickly, without contacting the remote server.  The dataset's age
 will be based on when the dataset was reloaded last.  Normally this
 should be true (the default), but set it to false if you want to bypass
 the cached information. -->
-<quickRestart>true</quickRestart>
+<quickRestart>false</quickRestart>
 
 <!-- If you want to restrict access to some datasets, you need to specify
 the method used for logging on (authentication).
@@ -102,7 +102,7 @@ If true, some information about the dataset (title, summary, etc) is shown
   If the user clicks on a link to a dataset he doesn't have access to,
   he will get an error message and be prompted to log in.
 -->
-<listPrivateDatasets>false</listPrivateDatasets>
+<listPrivateDatasets>true</listPrivateDatasets>
 
 <!-- baseUrl is the start of the public url, to which "/[warName]" is appended.
 You MUST CHANGE this when you install ERDDAP on your server. For example,
@@ -133,7 +133,7 @@ on almost all html pages that ERDDAP generates.
 The info is the same info that is written to the [bigParentDirectory]logs/log.txt file.
 It is best to always leave this as 'false'.
 -->
-<displayDiagnosticInfo>false</displayDiagnosticInfo>
+<displayDiagnosticInfo>true</displayDiagnosticInfo>
 
 <!-- ERDDAP lets you choose between two search engines for full text searches:
 * original (the default) - is the best choice if your ERDDAP has fewer
@@ -172,8 +172,8 @@ and you are using anti-virus software (e.g., McAfee) make sure McAfee
 Anti Virus Standard Protections :
 Prevent mass mailing worms from sending mail" is un-checked.
 -->
-<emailFromAddress>nothing@example.com</emailFromAddress>
-<emailUserName></emailUserName>
+<emailFromAddress>tomcat@localhost</emailFromAddress>
+<emailUserName>tomcat</emailUserName>
 <emailPassword></emailPassword>
 <emailProperties></emailProperties>
 <emailSmtpHost></emailSmtpHost>
@@ -193,7 +193,7 @@ You MUST CHANGE these to describe your installation.
 <adminStateOrProvince>CA</adminStateOrProvince>
 <adminPostalCode>92093</adminPostalCode>
 <adminCountry>USA</adminCountry>
-<adminEmail>nobody@example.com</adminEmail>
+<adminEmail>vrowley@ucsd.edu</adminEmail>
 
 <!--
 These default accessConstraints, fees, and keywords are used by
@@ -258,7 +258,7 @@ But if you you think someone is abusing the flag system,
 change this text again, restart ERDDAP, and send
 all of the users of the flag system the relevant new flagKeys
 (see the list in the Daily Report). -->
-<flagKeyKey>73976bb0-9cd4-11e3-a5e2-0800200c9a66</flagKeyKey>
+<flagKeyKey>That which does not kill us...</flagKeyKey>
 
 <!-- ERDDAP has an email/URL subscription system which sends a user an email
 or pings a url whenever an interesting dataset changes.
@@ -273,7 +273,7 @@ Note that if you change this and restart ERDDAP, the list of subscriptions
 (in [bigParentDirectory]/subscriptionsV1.txt) isn't affected.
 See also the subscriptionEmailBlacklist in datasets.xml.
 -->
-<subscriptionSystemActive>true</subscriptionSystemActive>
+<subscriptionSystemActive>false</subscriptionSystemActive>
 
 <!-- ERDDAP has converters for time, keywords, units, FIPS codes, etc.
 ([domain]/erddap/convert/index.html).
@@ -395,7 +395,7 @@ because the NOAA IOOS office wants to be able to categorize variables and
 datasets in this way.
 For non-NOAA ERDDAP installations, there is no downside to setting this to "false".
 -->
-<variablesMustHaveIoosCategory>true</variablesMustHaveIoosCategory>
+<variablesMustHaveIoosCategory>false</variablesMustHaveIoosCategory>
 
 <!-- This is the comma-separated list (recommended: in alphabetical order)
 of the global attribute and variable attribute names which will be
@@ -432,8 +432,8 @@ All of the information in [standardShortDescriptionHtml] is also contained in
 ERDDAP (the Environmental Research Division's Data Access Program)
 is a data server that gives you a simple, consistent way to download
 subsets of scientific datasets in common file formats and make graphs and maps.
-This particular ERDDAP installation has oceanographic data
-(for example, data from satellites and buoys).
+This particular ERDDAP installation has OA data.
+***  ALSO< THIS IS IMPOSSIBLE TO CONFIGURE!!!   ***
 
 [standardShortDescriptionHtml]
 
