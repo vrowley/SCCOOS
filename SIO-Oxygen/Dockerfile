@@ -16,7 +16,7 @@ RUN useradd jfumo \
 
 # install library that provides nc-config file that is needed for compiling ncdf4
 RUN apt-get update
-RUN apt-get upgrade
+RUN apt-get -y upgrade
 RUN apt-get install apt-transport-https
 RUN apt-get -y install apt-utils
 RUN echo "deb https://deb.debian.org/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
@@ -39,8 +39,11 @@ RUN Rscript -e 'install.packages("chron")'
 RUN Rscript -e 'install.packages("RColorBrewer")'
 RUN Rscript -e 'install.packages("lattice")'
 RUN Rscript -e 'install.packages("ncdf4")'
+RUN Rscript -e 'install.packages("lubridate")'
 RUN Rscript -e 'install.packages("googledrive")'
 RUN Rscript -e 'install.packages("xlsx")'
+RUN Rscript -e 'install.packages("readr")'
+RUN Rscript -e 'install.packages("zoo")'
 
 # Copy any files into the image
 # COPY foo.txt /home/jfumo
@@ -54,7 +57,7 @@ CMD ["/init"]
 
 # Start using this command
 #
-# docker build -t sass-oxygen-image:v04
+# docker build -t sass-oxygen-image:v04 .
 # docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --name sass-oxygen-container04 -d -p 8787:8787 sass-oxygen-image:v04
 # docker exec --privileged -i -t sass-oxygen-containerv03 bash
 #
