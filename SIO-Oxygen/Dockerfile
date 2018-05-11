@@ -57,4 +57,6 @@ CMD ["/init"]
 # docker build -t sass-oxygen-image:v04
 # docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --name sass-oxygen-container04 -d -p 8787:8787 sass-oxygen-image:v04
 # docker exec --privileged -i -t sass-oxygen-containerv03 bash
-
+#
+# To run the script from the command line:  Rscript <scriptname>
+#
