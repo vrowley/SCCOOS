@@ -3,7 +3,7 @@ Code to pull in data from SeapHOx
 
 To run ERDDAP under Docker
 
-docker run --name seaphox -v $(pwd)/logs:/erddapData/logs -v /Users/vrowley/Google\ Drive\ File\ Stream/My\ Drive/SCCOOS/GIT/SCCOOS/SeapHOx/erddap/:/erddapData/data -d -p 8080:8080 seaphox
+docker run --name seaphox -v $(pwd)/logs:/DockerData/seaphox/logs -v /Users/vrowley/GIT/SCCOOS/SeapHOx/erddap/:/DockerData/seaphox/erddapData/data -d -p 8085:8085 seaphox
 docker exec -i -t seaphox bash
 cd content/erddap/
 cp /erddapData/data/datasets.xml .
@@ -13,4 +13,4 @@ cd ../../bin
 ./startup.sh ; tail -f ../logs/catalina.out
 
 
-Browse to http://localhost:8080/erddap
+Browse to http://localhost:8085/erddap
