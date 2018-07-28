@@ -1,6 +1,7 @@
 # Sample Dockerfile to extend standard rstudio image to include extra stuff
 # First start with the base & latest rstudio image
-FROM rocker/rstudio:latest
+#FROM rocker/rstudio:latest
+FROM r-base
 
 # Add any environmental variables
 ENV PATH=$PATH
@@ -25,6 +26,7 @@ RUN apt-get -y install libnetcdf-dev
 RUN apt-get -y install default-jre
 RUN apt-get -y install default-jdk
 RUN apt-get -y install r-cran-rjava
+RUN apt-get -y install libssl-dev
 #RUN apt-get -y install libpcre3-dev
 #RUN apt-get -y install liblzma-dev
 #RUN apt-get -y install libbz2-dev
@@ -44,6 +46,7 @@ RUN Rscript -e 'install.packages("googledrive")'
 RUN Rscript -e 'install.packages("xlsx")'
 RUN Rscript -e 'install.packages("readr")'
 RUN Rscript -e 'install.packages("zoo")'
+RUN Rscript -e 'install.packages("httr")'
 
 # Copy any files into the image
 # COPY foo.txt /home/jfumo
@@ -53,7 +56,9 @@ VOLUME /home/jfumo/AutoShoreStation
 
 # Specify the container entrypoint at runtime
 # In this case, copied from rstudio dockerfile
-CMD ["/init"]
+# CMD ["/init"]
+ENTRYPOINT ["Rscript", "/home/jfumo/AutoShoreStation/pH/GetConvertedpHData.R"] 
+# ENTRYPOINT ["top", "-b"]
 
 # Start using this command
 #
