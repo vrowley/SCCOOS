@@ -1,8 +1,10 @@
-# Sample Dockerfile to extend rocker/r-base image to include things needed to run 
-# NB SASS pH computations hourly
+# Sample Dockerfile to extend standard rstudio image to include extra stuff
+# First start with the base & latest rstudio image
+#FROM rocker/rstudio:latest
+FROM r-base
 
-# First start with the latest image
-FROM rocker/rstudio
+# Add any environmental variables
+ENV PATH=$PATH
 
 # Run any required commands needed, make directories, etc
 RUN useradd jfumo \
@@ -19,30 +21,50 @@ RUN apt-get -y upgrade
 RUN apt-get install apt-transport-https
 RUN apt-get -y install apt-utils
 RUN echo "deb https://deb.debian.org/bin/linux/ubuntu trusty/" >> /etc/apt/sources.list
-RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list
-RUN apt-get -y install cron
 RUN apt-get -y install libnetcdf-dev
-RUN apt-get -y install r-cran-rjava
 
+RUN apt-get -y install default-jre
+RUN apt-get -y install default-jdk
+RUN apt-get -y install r-cran-rjava
+RUN apt-get -y install libssl-dev
+#RUN apt-get -y install libpcre3-dev
+#RUN apt-get -y install liblzma-dev
+#RUN apt-get -y install libbz2-dev
+#RUN wget https://cran.rstudio.com/src/contrib/rJava_0.9-9.tar.gz
+#RUN wget https://cran.rstudio.com/src/contrib/xlsxjars_0.6.1.tar.gz
+#RUN wget https://cran.rstudio.com/src/contrib/xlsx_0.5.7.tar.gz
+#RUN R CMD INSTALL rJava_0.9-9.tar.gz
+#RUN R CMD INSTALL xlsxjars_0.6.1.tar.gz
+#RUN R CMD INSTALL xlsx_0.5.7.tar.gz
+
+RUN Rscript -e 'install.packages("chron")'
+RUN Rscript -e 'install.packages("RColorBrewer")'
+RUN Rscript -e 'install.packages("lattice")'
+RUN Rscript -e 'install.packages("ncdf4")'
 RUN Rscript -e 'install.packages("lubridate")'
 RUN Rscript -e 'install.packages("googledrive")'
-RUN Rscript -e 'install.packages("ncdf4")'
 RUN Rscript -e 'install.packages("xlsx")'
+RUN Rscript -e 'install.packages("readr")'
+RUN Rscript -e 'install.packages("zoo")'
+RUN Rscript -e 'install.packages("httr")'
 
-#
-# Put command to run R script into /etc/cron.daily
-# Put command to run R script into /etc/cron.d/Get\ Converted\ pH\ Data.R
-#
-RUN echo "*/5 * * * * Rscript /home/jfumo/AutoShoreStation/pH/GetConvertedpHData-noPlot.R" > /etc/cron.daily/NB-pH
-RUN /etc/init.d/cron reload
+# Copy any files into the image
+# COPY foo.txt /home/jfumo
 
+# Create a mountpoint in the image for linking to a host folder at runtime
+VOLUME /home/jfumo/AutoShoreStation
+
+# Specify the container entrypoint at runtime
+# In this case, copied from rstudio dockerfile
+# CMD ["/init"]
+ENTRYPOINT ["Rscript", "/home/jfumo/AutoShoreStation/pH/GetConvertedpHData.R"] 
+# ENTRYPOINT ["top", "-b"]
+
+# Start using this command
 #
-# Useful commands
+# docker build -t sass-ph-image:v01 .
+# docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --name sass-ph-container01 -d -p 8787:8787 sass-ph-image:v01
+# docker exec --privileged -i -t sass-ph-containerv01 bash
 #
-#  docker build -t sass-nb-ph:02 .
-#  docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --cap-add=SYS_ADMIN --name sass-nb-ph rocker/r-base bash
-#  docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --cap-add=SYS_ADMIN --name sass-nb-phv01 sass-nb-ph:02 bash
-# 
 # To run the script from the command line:  Rscript <scriptname>
-#
 #
