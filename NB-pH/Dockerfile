@@ -52,18 +52,18 @@ RUN Rscript -e 'install.packages("httr")'
 # COPY foo.txt /home/jfumo
 
 # Create a mountpoint in the image for linking to a host folder at runtime
-VOLUME /home/jfumo/AutoShoreStation
+VOLUME /home/GIT
 
 # Specify the container entrypoint at runtime
 # In this case, copied from rstudio dockerfile
 # CMD ["/init"]
-ENTRYPOINT ["Rscript", "/home/jfumo/AutoShoreStation/pH/GetConvertedpHData.R"] 
+ENTRYPOINT ["Rscript", "/home/GIT/AutoShoreStation/pH/GetConvertedpHData.R"] 
 # ENTRYPOINT ["top", "-b"]
 
 # Start using this command
 #
 # docker build -t sass-ph-image:v01 .
-# docker run -i -t --rm -v /Users/vrowley/GIT/AutoShoreStation:/home/jfumo/AutoShoreStation --name sass-ph-container01 -d -p 8787:8787 sass-ph-image:v01
+# docker run -i -t --rm -v GIT:/home/GIT --name sass-ph-container01 sass-ph-image:v01
 # docker exec --privileged -i -t sass-ph-containerv01 bash
 #
 # To run the script from the command line:  Rscript <scriptname>
