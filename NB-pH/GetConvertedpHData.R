@@ -10,11 +10,29 @@ library(ncdf4)
 rm(list=ls())
 #SaveToDrive=T
 SaveToDrive=F
+TestLocally=T
+#TestLocally=F
 
-if(SaveToDrive==T){
+if (SaveToDrive==T) {
+  token <- oauth_service_token(
+    oauth_endpoints("google"),
+    jsonlite::fromJSON("/home/jfumo/AutoShoreStation/.ssh/sccoos-r-b272b076e3fe.json"),
+    "https://www.googleapis.com/auth/userinfo.profile")
+  drive_auth(service_token = "/home/jfumo/AutoShoreStation/.ssh/sccoos-r-b272b076e3fe.json")
   setwd("/home/jfumo/AutoShoreStation/pH")
-}
-else{
+} else if (TestLocally == T) {
+  token <- oauth_service_token(
+    oauth_endpoints("google"),
+    jsonlite::fromJSON("/home/vrowley/GIT/SCCOOS/NB-pH/sccoos-r-b272b076e3fe.json"),
+    "https://www.googleapis.com/auth/userinfo.profile")
+  drive_auth(service_token = "/home/vrowley/GIT/SCCOOS/NB-pH/sccoos-r-b272b076e3fe.json")
+  setwd("/home/vrowley/GIT/SCCOOS/NB-pH")  
+} else {
+  token <- oauth_service_token(
+    oauth_endpoints("google"),
+    jsonlite::fromJSON("/home/sccoos-r-b272b076e3fe.json"),
+    "https://www.googleapis.com/auth/userinfo.profile")
+  drive_auth(service_token = "/home/sccoos-r-b272b076e3fe.json")
   setwd("/home/sccoos-NB-pH")
 }
 WD <- getwd()
@@ -69,11 +87,6 @@ TrisCalTimes$time=as.POSIXct(strptime(as.character(TrisCalTimes$time),'%m/%d/%y 
 
 #-------------------------------------------------------------------------------------------------------------
 # read in google spreadsheet to get sensor coefficients
-token <- oauth_service_token(
-  oauth_endpoints("google"),
-  jsonlite::fromJSON("/home/jfumo/AutoShoreStation/.ssh/sccoos-r-b272b076e3fe.json"),
-  "https://www.googleapis.com/auth/userinfo.profile")
-drive_auth(service_token = "/home/jfumo/AutoShoreStation/.ssh/sccoos-r-b272b076e3fe.json")
 file=drive_download(as_id("1099lNMJ3XZQIFv7oSr0Q-5i4fihx7gnvoxMaVhiUhJE"),type='xlsx',overwrite=T)
 Coef=read.xlsx("SASS Inventory and Cleaning.xlsx",sheetName="pH_NBPier_Coef")
 Coef=Coef[is.na(Coef$start_time)==F,]
