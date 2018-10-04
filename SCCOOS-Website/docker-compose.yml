@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+   db:
+     image: mysql:5.7.23
+     volumes:
+       - scs-ms:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: wordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+
+   proxy:
+     image: jwilder/nginx-proxy:alpine
+     ports:
+       - "80:80"
+       - "443:443"
+     volumes:
+       - scs-ng:/etc/nginx
+       - /var/run/docker.sock:/tmp/docker.sock:ro
+     environment:
+       DEFAULT_HOST=www.sccoos.org
+       HTTPS_METHOD=noredirect
+       
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     volumes:
+       - scs-wp-etc:/etc
+       - scs-wp-html:/var/www/html
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_PASSWORD: wordpress
+       VIRTUAL_PROTO=https
+       VIRTUAL_PORT=443
+       CERT_NAME=shared
+       VIRTUAL_HOST=www.sccoos.org
+volumes:
+    db_data:
